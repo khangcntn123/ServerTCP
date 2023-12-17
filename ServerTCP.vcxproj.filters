@@ -43,9 +43,15 @@
     <ClCompile Include="MyTCPServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="processImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyTCPServer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="processImage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

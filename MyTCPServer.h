@@ -14,7 +14,7 @@ class MyTCPServer : public QObject
 public:
     explicit MyTCPServer(int port, QObject* parent = nullptr);
     bool isStarted() const;
-    void sendToAll(QByteArray message);
+    //int _mport;
     void serverDisconnect();
 signals:
     void newClientConnected();
@@ -22,15 +22,16 @@ signals:
     void dataReceived();
     void Events(int a,int b, int c);
 
-private slots:
+public slots:
+    void sendToAll(QByteArray message);
     void on_client_connecting();
-
+    //void startServer();
     void clientDisconnected();
 
     void clientDataReady();
 
 
-private:
+public:
     QTcpServer* _server;
     QList<QTcpSocket*> _socketsList;
     bool _isStarted;

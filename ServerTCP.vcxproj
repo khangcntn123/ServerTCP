@@ -107,11 +107,15 @@
     <QtUic Include="ServerTCP.ui" />
     <QtMoc Include="ServerTCP.h" />
     <ClCompile Include="MyTCPServer.cpp" />
+    <ClCompile Include="processImage.cpp" />
     <ClCompile Include="ServerTCP.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MyTCPServer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="processImage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

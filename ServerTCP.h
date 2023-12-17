@@ -17,9 +17,10 @@
 #include <QMouseEvent>
 #include <iostream>
 #include <windows.h>
+#include <QImage>
 #include <WinUser.h>
-
-
+//#include "processImage.h"
+#include <qthread.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -40,7 +41,7 @@ public slots:
     void on_btnStartServer_clicked();
 
     void newClinetConnected();
-    void sendImage();
+    //void sendImage();
     void on_btnSendToAll_clicked();
 
     void clientDisconnected();
@@ -48,21 +49,25 @@ public slots:
     //void clientDataReceived(QString message);
 
     void EventRecieve(int a, int b, int c);
-
+    //QByteArray captureScreen();
 
     //void keyPressEvent(QKeyEvent* event);
-
+signals :
+    void rawImageDataIsReady(const QByteArray& rawBitmap, int width, int height, int quality);
 
 public:
+    int count = 0;
     int DataEvent[3] = { 0 };
     // DataEvent[0] = 0->8, 0->6 mouse, 7->8 kb
     // DataEvent[1] = x neu la chuot, Virtual Key neu la phim
     // DataEvent[2] = y neu la chuot, 0 neu la phim
     QPoint mousePos;
     //QTimer* mouseUpdateTimer;
-
-    QTimer _timer;
-
+    QElapsedTimer _timer;
+    QLabel imageLabel;
     Ui::ServerTCPClass* ui;
     MyTCPServer* _server;
+    //processImage _processImage;
+    //QThread _processImageThread;
+    //QThread _socketThread;
 };

@@ -69,7 +69,7 @@ bool MyTCPServer::isStarted() const
 
 void MyTCPServer::sendToAll(QByteArray message)
 {
-    
+
     foreach(auto socket, _socketsList) {
         socket->write(message);
     }
