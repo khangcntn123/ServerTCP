@@ -26,7 +26,7 @@ void processImage::createImage(const QByteArray& rawBitmap, int width, int heigh
     QByteArray imagesize;
     QDataStream _stream1(&imagesize, QIODevice::WriteOnly);
     _stream1 << datasize;
-    MessageBox(NULL, TEXT("Du lieu san sang de gui di"), TEXT("Title of the Message Box"), MB_OK);
+    //MessageBox(NULL, TEXT("Du lieu san sang de gui di"), TEXT("Title of the Message Box"), MB_OK);
 
     emit imagedatareadytosent(imagesize+imageData);
 }

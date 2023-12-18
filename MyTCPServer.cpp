@@ -42,6 +42,8 @@ void MyTCPServer::clientDataReady()
         emit dataReceived();
     }
     else {
+        //MessageBox(NULL, TEXT("Da nhan tin hieu chuot ban phim "), TEXT("Title of the Message Box"), MB_OK);
+
         int y = 0;
         int z = 0;
         _mstream >> y;

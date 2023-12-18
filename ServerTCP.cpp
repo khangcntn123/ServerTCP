@@ -74,33 +74,52 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
     DataEvent[2] = c;
     /* ui.movePos->setText("Mouse Move Pos: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
     int type = DataEvent[0];
-    QCursor::setPos(DataEvent[1], DataEvent[2]);
+    //QCursor::setPos(DataEvent[1], DataEvent[2]);
+    QString kkk = QString::number(type);
+    //QString kekeke = QString::number(b);
+    //ui->lstConsole->addItem("Gia tri y la:" + kekeke);
+    //QString kekeke1 = QString::number(c);
+    //ui->lstConsole->addItem("Gia tri z la: " + kekeke1);
     if (type == 0) {
         //ui.Double_click->setText("Type = X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));
-
     }
     else {
         if (type == 1) {
             /*  ui.Press->setText("Mouse Press L: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
+            //MessageBox(NULL, TEXT("Da nhan tin hieu nhan chuot trai di"), TEXT("Title of the Message Box"), MB_OK);
+            ui->lstConsole->addItem("Press Left");
+            ui->lstConsole->addItem("Type la: " + kkk);
             mouse_event(MOUSEEVENTF_LEFTDOWN, currentPos.x(), currentPos.y(), 0, 0);
             //mouseInput.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
             //SendInput(1, &mouseInput, sizeof(INPUT));
 
         }
         else if (type == 2) {
+            //MessageBox(NULL, TEXT("Da nhan tin hieu nhan chuot phai di"), TEXT("Title of the Message Box"), MB_OK);
+
             /*ui.Press->setText("Mouse Press R: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
+            ui->lstConsole->addItem("press right");
+            ui->lstConsole->addItem("Type la: " + kkk);
             mouse_event(MOUSEEVENTF_RIGHTDOWN, currentPos.x(), currentPos.y(), 0, 0);
             //mouseInput.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
             //SendInput(1, &mouseInput, sizeof(INPUT));
         }
         else if (type == 3) {
+            //MessageBox(NULL, TEXT("Da nhan tin hieu tha chuot trai di"), TEXT("Title of the Message Box"), MB_OK);
+
             /* ui.Release->setText("Mouse Release L: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
+            ui->lstConsole->addItem("Release Left");
+            ui->lstConsole->addItem("Type la: " + kkk);
             mouse_event(MOUSEEVENTF_LEFTUP, currentPos.x(), currentPos.y(), 0, 0);
             //mouseInput.mi.dwFlags = MOUSEEVENTF_LEFTUP;
             //SendInput(1, &mouseInput, sizeof(INPUT));
         }
         else if (type == 4) {
+            //MessageBox(NULL, TEXT("Da nhan tin hieu tha chuot phai di"), TEXT("Title of the Message Box"), MB_OK);
+
             /*  ui.Release->setText("Mouse Release R: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
+            ui->lstConsole->addItem("release right");
+            ui->lstConsole->addItem("Type la: " + kkk);
             mouse_event(MOUSEEVENTF_RIGHTUP, currentPos.x(), currentPos.y(), 0, 0);
             //mouseInput.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
             //SendInput(1, &mouseInput, sizeof(INPUT));
@@ -120,6 +139,8 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
             //SendInput(0, &keyInput, sizeof(keyInput));
             //keyInput.ki.dwFlags = KEYEVENTF_KEYUP;
             //SendInput(0, &keyInput, sizeof(keyInput));
+            //MessageBox(NULL, TEXT("Da nhan tin hieu cua ban phim di"), TEXT("Title of the Message Box"), MB_OK);
+
             keybd_event(DataEvent[1], 0, 0, 0);
             keybd_event(DataEvent[1], 0, KEYEVENTF_KEYUP, 0);
             //INPUT keyInput;
