@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QtNetwork/qtcpserver.h>
 #include <QtNetwork/qtcpsocket.h>
+#include <Windows.h>
 
 
 class MyTCPServer : public QObject

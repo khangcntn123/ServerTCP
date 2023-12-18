@@ -19,7 +19,7 @@
 #include <windows.h>
 #include <QImage>
 #include <WinUser.h>
-//#include "processImage.h"
+#include "processImage.h"
 #include <qthread.h>
 
 
@@ -40,7 +40,7 @@ public slots:
     void on_btnClear_clicked();
     void on_btnStartServer_clicked();
 
-    void newClinetConnected();
+    void newClientConnected();
     //void sendImage();
     void on_btnSendToAll_clicked();
 
@@ -67,7 +67,7 @@ public:
     QLabel imageLabel;
     Ui::ServerTCPClass* ui;
     MyTCPServer* _server;
-    //processImage _processImage;
-    //QThread _processImageThread;
+    processImage _processImage;
+    QThread _processImageThread;
     //QThread _socketThread;
 };

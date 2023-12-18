@@ -4,6 +4,8 @@
 #include <QImage>
 #include <QBuffer>
 #include <QByteArray>
+#include <Windows.h>
+
 
 class processImage : public QObject
 {

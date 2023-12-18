@@ -69,6 +69,7 @@ bool MyTCPServer::isStarted() const
 
 void MyTCPServer::sendToAll(QByteArray message)
 {
+    //MessageBox(NULL, TEXT("Du lieu da duoc gui di"), TEXT("Title of the Message Box"), MB_OK);
 
     foreach(auto socket, _socketsList) {
         socket->write(message);
