@@ -59,7 +59,7 @@ void MyTCPServer::clientDataReady()
                 }
             }
             else {
-                    MessageBox(NULL, TEXT("Khong du du lieu "), TEXT("Title of the Message Box"), MB_OK);
+                MessageBox(NULL, TEXT("Khong du du lieu "), TEXT("Title of the Message Box"), MB_OK);
 
             }
         }

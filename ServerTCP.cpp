@@ -29,7 +29,7 @@ void ServerTCP::on_btnStartServer_clicked()
     if (_server == nullptr) {
         auto port = ui->spnServerPort->value();
         _server = new MyTCPServer(port);
-        //connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::setupThread);
+        //connect(_server, &::newClientConnected, this, &ServerTCP::setupThread);
         connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::newClientConnected);
  /*       connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::_captureScreen);*/
         connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::_captureScreen);
@@ -45,7 +45,7 @@ void ServerTCP::on_btnStartServer_clicked()
     else {
         _server->serverDisconnect();
         ui->lstConsole->addItem("Disconnected");
-        _server = nullptr;
+        //_server = nullptr;
     }
     //   _timer.setInterval(1000 / 30);
     //   connect(&_timer, &QTimer::timeout, this, &ServerTCP::_captureScreen);
@@ -54,6 +54,8 @@ void ServerTCP::on_btnStartServer_clicked()
 
 
 }
+
+
 
 //void ServerTCP::setupThread() {
 //    _screenCapture.moveToThread(&_screenCaptureThread);
@@ -381,6 +383,7 @@ void ServerTCP::_captureScreen() {
 void ServerTCP::clientDisconnected()
 {
     ui->lstConsole->addItem("Client Disconnected");
+    ui->btnStartServer->setText("Start Server");
 }
 
 //void ServerTCP::clientDataReceived(QString message)

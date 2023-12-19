@@ -1,8 +1,4 @@
 #pragma once
-
-
-
-
 #include <QObject>
 #include <QtNetwork/qtcpserver.h>
 #include <QtNetwork/qtcpsocket.h>
@@ -21,14 +17,14 @@ signals:
     void newClientConnected();
     void clientDisconnect();
     void dataReceived();
-    void Events(int a,int b, int c);
+    void Events(int a, int b, int c);
 
 public slots:
     void sendToAll(QByteArray message);
     void on_client_connecting();
     //void startServer();
     void clientDisconnected();
-    
+
     void clientDataReady();
 
 
@@ -37,4 +33,3 @@ public:
     QList<QTcpSocket*> _socketsList;
     bool _isStarted;
 };
-
