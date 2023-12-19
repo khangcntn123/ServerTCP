@@ -108,6 +108,7 @@
     <QtMoc Include="ServerTCP.h" />
     <ClCompile Include="MyTCPServer.cpp" />
     <ClCompile Include="processImage.cpp" />
+    <ClCompile Include="screenCapture.cpp" />
     <ClCompile Include="ServerTCP.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -116,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="processImage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="screenCapture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

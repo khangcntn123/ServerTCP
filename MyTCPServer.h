@@ -28,7 +28,7 @@ public slots:
     void on_client_connecting();
     //void startServer();
     void clientDisconnected();
-
+    
     void clientDataReady();
 
 

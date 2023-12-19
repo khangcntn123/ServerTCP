@@ -29,11 +29,14 @@ void ServerTCP::on_btnStartServer_clicked()
     if (_server == nullptr) {
         auto port = ui->spnServerPort->value();
         _server = new MyTCPServer(port);
+        //connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::setupThread);
         connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::newClientConnected);
+ /*       connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::on_btnSendToAll_clicked);*/
         connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::on_btnSendToAll_clicked);
         connect(_server, &MyTCPServer::dataReceived, this, &ServerTCP::on_btnSendToAll_clicked);
         connect(_server, &MyTCPServer::clientDisconnect, this, &ServerTCP::clientDisconnected);
         connect(_server, &MyTCPServer::Events, this, &ServerTCP::EventRecieve);
+        connect(_server, &MyTCPServer::Events, this, &ServerTCP::receiveData);
         auto state = (_server->isStarted()) ? "1" : "0";
         ui->lblConnectionStatus->setProperty("state", state);
         style()->polish(ui->lblConnectionStatus);
@@ -52,29 +55,62 @@ void ServerTCP::on_btnStartServer_clicked()
 
 }
 
+//void ServerTCP::setupThread() {
+//    _screenCapture.moveToThread(&_screenCaptureThread);
+//    _processImage.moveToThread(&_processImageThread);
+//    connect(&_screenCaptureThread, &QThread::finished, &_screenCapture, &QObject::deleteLater);
+//    connect(_server, &MyTCPServer::newClientConnected, &_screenCapture, &screenCapture::CaptureRawData);
+//    connect(_server, &MyTCPServer::dataReceived, &_screenCapture, &screenCapture::CaptureRawData);
+//    connect(&_processImageThread, &QThread::finished, &_processImage, &QObject::deleteLater);
+//    connect(&_processImage, &processImage::imagedatareadytosent, _server, &MyTCPServer::sendToAll);
+//    connect(&_screenCapture, &screenCapture::rawImageDataIsReady, &_processImage, &processImage::createImage);
+//    _processImageThread.start();
+//    _screenCaptureThread.start();
+//}
+
+void ServerTCP::receiveData(int x, int y, int z) {
+    if (x > 0) {
+        QString kk = QString::number(x);
+        ui->lstConsole->addItem("Type: " + kk);
+        kk = QString::number(y);
+        ui->lstConsole->addItem("x: " + kk);
+        kk = QString::number(z);
+        ui->lstConsole->addItem("y: " + kk);
+    }
+}
+
+
 void ServerTCP::newClientConnected()
 {
+
+    //MessageBox(NULL, TEXT("bat dau thiet lap luong"), TEXT("Title of the Message Box"), MB_OK);
     ui->lstConsole->addItem("New Client connected");
     ui->btnStartServer->setText("Disconnect");
     //MessageBox(NULL, TEXT("Bat dau dua vao luong"), TEXT("Title of the Message Box"), MB_OK);
+    //_screenCapture.moveToThread(&_screenCaptureThread);
     _processImage.moveToThread(&_processImageThread);
+    //connect(&_screenCaptureThread, &QThread::finished, &_screenCapture, &QObject::deleteLater);
+    //connect(_server, &MyTCPServer::newClientConnected, &_screenCapture, &screenCapture::CaptureRawData);
+    //connect(_server, &MyTCPServer::dataReceived, &_screenCapture, &screenCapture::CaptureRawData);
     connect(&_processImageThread, &QThread::finished, &_processImage, &QObject::deleteLater);
     connect(&_processImage, &processImage::imagedatareadytosent, _server, &MyTCPServer::sendToAll);
     connect(this, &ServerTCP::rawImageDataIsReady, &_processImage, &processImage::createImage);
+    //connect(&_screenCapture, &screenCapture::rawImageDataIsReady, &_processImage, &processImage::createImage);
     _processImageThread.start();
+    //_screenCaptureThread.start();
     //_timer.setInterval(1000/10);
     //connect(&_timer, &QTimer::timeout, this, &ServerTCP::on_btnSendToAll_clicked);
     //_timer.start();
 }
 void ServerTCP::EventRecieve(int a, int b, int c) {
-    ui->lstConsole->addItem("truyen duoc chuot");
+    //ui->lstConsole->addItem("truyen duoc chuot");
     QPoint currentPos = QCursor::pos();
     DataEvent[0] = a;
     DataEvent[1] = b;
     DataEvent[2] = c;
     /* ui.movePos->setText("Mouse Move Pos: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
     int type = DataEvent[0];
-    //QCursor::setPos(DataEvent[1], DataEvent[2]);
+    QCursor::setPos(DataEvent[1], DataEvent[2]);
     QString kkk = QString::number(type);
     //QString kekeke = QString::number(b);
     //ui->lstConsole->addItem("Gia tri y la:" + kekeke);
@@ -87,8 +123,8 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
         if (type == 1) {
             /*  ui.Press->setText("Mouse Press L: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
             //MessageBox(NULL, TEXT("Da nhan tin hieu nhan chuot trai di"), TEXT("Title of the Message Box"), MB_OK);
-            ui->lstConsole->addItem("Press Left");
-            ui->lstConsole->addItem("Type la: " + kkk);
+            //ui->lstConsole->addItem("Press Left");
+            //ui->lstConsole->addItem("Type la: " + kkk);
             mouse_event(MOUSEEVENTF_LEFTDOWN, currentPos.x(), currentPos.y(), 0, 0);
             //mouseInput.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
             //SendInput(1, &mouseInput, sizeof(INPUT));
@@ -102,11 +138,9 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
             ui->lstConsole->addItem("Type la: " + kkk);
             mouse_event(MOUSEEVENTF_RIGHTDOWN, currentPos.x(), currentPos.y(), 0, 0);
             //mouseInput.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
-            //SendInput(1, &mouseInput, sizeof(INPUT));
+            //SendInput(1, &mouseInput, saizeof(INPUT));
         }
         else if (type == 3) {
-            //MessageBox(NULL, TEXT("Da nhan tin hieu tha chuot trai di"), TEXT("Title of the Message Box"), MB_OK);
-
             /* ui.Release->setText("Mouse Release L: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
             ui->lstConsole->addItem("Release Left");
             ui->lstConsole->addItem("Type la: " + kkk);
@@ -115,7 +149,7 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
             //SendInput(1, &mouseInput, sizeof(INPUT));
         }
         else if (type == 4) {
-            //MessageBox(NULL, TEXT("Da nhan tin hieu tha chuot phai di"), TEXT("Title of the Message Box"), MB_OK);
+            
 
             /*  ui.Release->setText("Mouse Release R: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]));*/
             ui->lstConsole->addItem("release right");
@@ -130,8 +164,8 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
         else if (type == 6) {
             /*   ui.Double_click->setText("NO MOUSE EVENT: X: " + QString::number(DataEvent[1]) + "Y: " + QString::number(DataEvent[2]) + "   " + QString::number(DataEvent[0]));*/
         }
-        else if (type == 7 || type == 8) {
-            //INPUT keyInput;
+        else if (type == 7) {
+            
             //keyInput.type = INPUT_KEYBOARD;
             //keyInput.ki.time = 0;
             //keyInput.ki.dwExtraInfo = 0;
@@ -139,16 +173,18 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
             //SendInput(0, &keyInput, sizeof(keyInput));
             //keyInput.ki.dwFlags = KEYEVENTF_KEYUP;
             //SendInput(0, &keyInput, sizeof(keyInput));
-            //MessageBox(NULL, TEXT("Da nhan tin hieu cua ban phim di"), TEXT("Title of the Message Box"), MB_OK);
-
+            //MessageBox(NULL, TEXT("aDa nhan tin hieu cua ban phim di"), TEXT("Title of the Message Box"), MB_OK);
             keybd_event(DataEvent[1], 0, 0, 0);
-            keybd_event(DataEvent[1], 0, KEYEVENTF_KEYUP, 0);
-            //INPUT keyInput;
+             //keybd_event(DataEvent[1], 0, K EYEVENTF_KEYUP, 0);hhh
+            //INPUT keyInput;INPUT keyInput;INzPUT keyInput;INPUT keyInput;
             //keyInput.type = INPUT_KEYBOARD;
             //keyInput.ki.time = 0;
             //keyInput.ki.dwExtraInfo = 0;
             //keyInput.ki.wVk = DataEvent[1];
             //SendInput(0, &keyInput, sizeof(keyInput));
+        }
+        else if(type==8){
+            keybd_event(DataEvent[1], 0, KEYEVENTF_KEYUP, 0);
         }
     }
 }
@@ -161,12 +197,16 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
 //    ui->grpSendData->setEnabled(false);
 //
 //}
+
+
+
+
 void ServerTCP::on_btnSendToAll_clicked() {
     _timer.start();
 
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    int quality = 40;
+    int quality = 50;
 
     HDC hScreenDC = GetDC(NULL);
     HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
@@ -193,7 +233,7 @@ void ServerTCP::on_btnSendToAll_clicked() {
 
     std::vector<BYTE> buf(screenWidth * screenHeight * 4);
     GetDIBits(hMemoryDC, hBitmap, 0, screenHeight, &buf[0], (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-    //qint64 elapsed = _timer.elapsed();
+    qint64 elapsed = _timer.elapsed();
     //QString elapsedStr = QString::number(elapsed);
     //ui->lstConsole->addItem("Thoi gian chuyen doi anh thanh QByteArray: " + elapsedStr + "ms");
 
@@ -201,9 +241,9 @@ void ServerTCP::on_btnSendToAll_clicked() {
     DeleteDC(hMemoryDC);
     ReleaseDC(NULL, hScreenDC);
     QByteArray byteArray(reinterpret_cast<char*>(buf.data()), buf.size());
-    qint64 khangg = _timer.elapsed();
-    QString quansat = QString::number(khangg);
-    ui->lstConsole->addItem("Thoi gian chup anh la: " + quansat + " ms");
+    //qint64 khangg = _timer.elapsed();
+    //QString quansat = QString::number(khangg);
+    //ui->lstConsole->addItem("Thoi gian chup anh la: " + quansat + " ms");
     /*MessageBox(NULL, TEXT("Da chup va chuan bi tha tin hieu"), TEXT("Title of the Message Box"), MB_OK);*/
 
     emit rawImageDataIsReady(byteArray, screenWidth, screenHeight, quality);
@@ -222,13 +262,11 @@ void ServerTCP::on_btnSendToAll_clicked() {
     //QImage image(reinterpret_cast<const uchar*>(buf.data()), screenWidth, screenHeight, QImage::Format_ARGB32);
     //QByteArray jpegData;
     //QBuffer buffer(&jpegData);
-    //buffer.open(QIODevice::WriteOnly);
+    //buffer.open(QIODevice::WriteOnlyd
     //image.save(&buffer, "JPEG",40);
     //qint64 kkk = _timer.elapsed();
     //QString kekeke = QString::number(kkk);
-    //ui->lstConsole->addItem("Thoi gian chuyen thanh anh server: " + kekeke + " ms");
-
-
+    //ui->lstConsole->addItem("Thoi gian chuyen thanh anh server: " + kekeke + " ms"adadaa                             
     //return byteArray;
 }
 

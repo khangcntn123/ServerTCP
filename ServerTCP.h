@@ -21,6 +21,7 @@
     #include <WinUser.h>
     #include "processImage.h"
     #include <qthread.h>
+    #include "screenCapture.h"
 
 
     QT_BEGIN_NAMESPACE
@@ -36,10 +37,10 @@
         ~ServerTCP();
 
     public slots:
-
+        void receiveData(int x,int y, int z);
         void on_btnClear_clicked();
         void on_btnStartServer_clicked();
-
+        //void setupThread();
         void newClientConnected();
         //void sendImage();
         void on_btnSendToAll_clicked();
@@ -69,5 +70,7 @@
         MyTCPServer* _server;
         processImage _processImage;
         QThread _processImageThread;
+        //QThread _screenCaptureThread;
+        //screenCapture _screenCapture;
         //QThread _socketThread;
     };

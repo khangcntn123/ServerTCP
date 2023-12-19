@@ -34,22 +34,54 @@ void MyTCPServer::clientDisconnected()
 void MyTCPServer::clientDataReady()
 {
     auto socket = qobject_cast<QTcpSocket*>(sender());
-    auto data = socket->readAll();
-    QDataStream _mstream(&data, QIODevice::ReadOnly);
-    int x = 0;
-    _mstream >> x;
-    if (x == 9) {
-        emit dataReceived();
+    if (socket->bytesAvailable() >= 4) {
+        QByteArray data = socket->read(4);
+        QDataStream _mstream(&data, QIODevice::ReadOnly);
+        int x = 0;
+        _mstream >> x;
+        if (x == 9) {
+            emit dataReceived();
+            if (socket->bytesAvailable() > 0) {
+                clientDataReady();
+            }
+        }
+        else {
+            if (socket->bytesAvailable() >= 8) {
+                QByteArray data = socket->read(8);
+                QDataStream _mstream(&data, QIODevice::ReadOnly);
+                int y = 0;
+                int z = 0;
+                _mstream >> y;
+                _mstream >> z;
+                emit Events(x, y, z);
+                if (socket->bytesAvailable() > 0) {
+                    clientDataReady();
+                }
+            }
+            else {
+                    MessageBox(NULL, TEXT("Khong du du lieu "), TEXT("Title of the Message Box"), MB_OK);
+
+            }
+        }
     }
     else {
-        //MessageBox(NULL, TEXT("Da nhan tin hieu chuot ban phim "), TEXT("Title of the Message Box"), MB_OK);
-
-        int y = 0;
-        int z = 0;
-        _mstream >> y;
-        _mstream >> z;
-        emit Events(x, y, z);
+        MessageBox(NULL, TEXT("Khong du du lieu de lay so nguyen dau tien"), TEXT("Title of the Message Box"), MB_OK);
     }
+    //auto data = socket->readAll();
+
+
+    //if (x == 9) {
+    //    emit dataReceived();
+    //}
+    //else {
+    //    //MessageBox(NULL, TEXT("Da nhan tin hieu chuot ban phim "), TEXT("Title of the Message Box"), MB_OK);
+
+    //    int y = 0;
+    //    int z = 0;
+    //    _mstream >> y;
+    //    _mstream >> z;
+    //    emit Events(x, y, z);
+    //}
 
     //foreach(auto s, _socketsList) {
     //    if (s != socket) {
