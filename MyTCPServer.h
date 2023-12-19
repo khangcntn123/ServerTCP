@@ -7,7 +7,7 @@
 #include <QtNetwork/qtcpserver.h>
 #include <QtNetwork/qtcpsocket.h>
 #include <Windows.h>
-
+#include <qnetwork.h>
 
 class MyTCPServer : public QObject
 {

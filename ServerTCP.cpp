@@ -31,9 +31,9 @@ void ServerTCP::on_btnStartServer_clicked()
         _server = new MyTCPServer(port);
         //connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::setupThread);
         connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::newClientConnected);
- /*       connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::on_btnSendToAll_clicked);*/
-        connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::on_btnSendToAll_clicked);
-        connect(_server, &MyTCPServer::dataReceived, this, &ServerTCP::on_btnSendToAll_clicked);
+ /*       connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::_captureScreen);*/
+        connect(_server, &MyTCPServer::newClientConnected, this, &ServerTCP::_captureScreen);
+        connect(_server, &MyTCPServer::dataReceived, this, &ServerTCP::_captureScreen);
         connect(_server, &MyTCPServer::clientDisconnect, this, &ServerTCP::clientDisconnected);
         connect(_server, &MyTCPServer::Events, this, &ServerTCP::EventRecieve);
         connect(_server, &MyTCPServer::Events, this, &ServerTCP::receiveData);
@@ -48,7 +48,7 @@ void ServerTCP::on_btnStartServer_clicked()
         _server = nullptr;
     }
     //   _timer.setInterval(1000 / 30);
-    //   connect(&_timer, &QTimer::timeout, this, &ServerTCP::on_btnSendToAll_clicked);
+    //   connect(&_timer, &QTimer::timeout, this, &ServerTCP::_captureScreen);
        //_timer.start();
 
 
@@ -99,7 +99,7 @@ void ServerTCP::newClientConnected()
     _processImageThread.start();
     //_screenCaptureThread.start();
     //_timer.setInterval(1000/10);
-    //connect(&_timer, &QTimer::timeout, this, &ServerTCP::on_btnSendToAll_clicked);
+    //connect(&_timer, &QTimer::timeout, this, &ServerTCP::_captureScreen);
     //_timer.start();
 }
 void ServerTCP::EventRecieve(int a, int b, int c) {
@@ -201,7 +201,7 @@ void ServerTCP::EventRecieve(int a, int b, int c) {
 
 
 
-void ServerTCP::on_btnSendToAll_clicked() {
+void ServerTCP::_captureScreen() {
     _timer.start();
 
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -271,7 +271,7 @@ void ServerTCP::on_btnSendToAll_clicked() {
 }
 
 
-//void ServerTCP::on_btnSendToAll_clicked()
+//void ServerTCP::_captureScreen()
 //{
 //    count++;
 //    QString count1 = QString::number(count);

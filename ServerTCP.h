@@ -43,7 +43,7 @@
         //void setupThread();
         void newClientConnected();
         //void sendImage();
-        void on_btnSendToAll_clicked();
+        void _captureScreen();
 
         void clientDisconnected();
 
